@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Page Not Found</title>
+    <script type="text/javascript">
+        // Single Page Apps for GitHub Pages
+        // MIT License
+        // https://github.com/rafgraph/spa-github-pages
+        // This script takes the current url and converts the path and query
+        // string into just a query string, and then redirects the browser
+        // to the new url with only a query string and hash fragment.
+        //
+        // For example:
+        //   https://www.foo.tld/one/two?a=b&c=d#qwe, becomes
+        //   https://www.foo.tld/?/one/two&a=b~and~c=d#qwe
+        // Note that this script breaks browsing the file system with the file:// protocol.
+        var l = window.location;
+        if (l.protocol === 'file:') {
+            alert('This page needs to be served from a web server, not opened from the file system.');
+        }
+        if (l.search !== '?' && l.search !== '') {
+            var q = l.search.slice(1).split('&').map(function(a) {
+                return a.replace(/~and~/g, '&')
+            }).join('&');
+            l.replace(
+                l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+                l.pathname + '?' + q + (l.hash ? '#' + l.hash : '')
+            );
+        }
+    </script>
+</head>
+<body>
+    <h1>Page Not Found</h1>
+    <p>The page you are looking for does not exist.</p>
+    <p><a href="/">Go to Home</a></p>
+</body>
+</html>

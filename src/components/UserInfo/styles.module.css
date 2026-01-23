@@ -1,0 +1,208 @@
+.headingContainer {
+  width: auto;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  text-transform: uppercase;
+  flex-shrink: 1;
+}
+
+.headingRow {
+  width: 100%;
+  flex-wrap: nowrap;
+  display: flex;
+  margin-bottom: 0.2rem;
+}
+
+.headingRow:last-child {
+  margin-bottom: 0;
+  gap: 0.5rem;
+
+}
+
+.headingRow h1 {
+  font-size: 4rem;
+  letter-spacing: 0.3rem;
+  color: rgb(var(--primary-color));
+  font-weight: 500;
+  align-self: center;
+}
+
+.headingRow h2,
+.headingRow h3 {
+  align-self: center;
+  padding: 0;
+}
+
+
+.headingRow h2 {
+  font-size: 1.6rem;
+  color: rgb(var(--teal-color));
+  font-weight: 500;
+}
+
+.headingRow h3 {
+  font-size: 1.2rem;
+  color: rgb(var(--text-color));
+  margin-left: 0px;
+}
+
+/* Mobile first - base styles already defined above */
+
+@media (min-width: 380px) {
+  .headingContainer {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .headingRow {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .headingRow h1 {
+    font-size: 2.5rem !important;
+    letter-spacing: 0.1rem;
+  }
+
+  .headingRow h2 {
+    font-size: 1.8rem !important;
+    margin-top: 8px;
+  }
+
+  .headingRow h3 {
+    font-size: 0.7rem;
+    margin-left: 0px;
+    margin-top: 8px;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+
+  .headingRow h1 {
+    font-size: 1.5rem;
+    letter-spacing: 0.05rem;
+  }
+
+  .headingRow h2 {
+    font-size: 0.8rem;
+  }
+
+  .headingRow h3 {
+    font-size: 0.7rem;
+    margin-left: 0px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .headingRow h1 {
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
+  }
+
+  .headingRow h2 {
+    font-size: 1rem;
+  }
+
+  .headingRow h3 {
+    font-size: 0.9rem;
+    margin-left: 10px;
+  }
+}
+
+/* Mobile devices */
+@media (min-width: 481px) and (max-width: 850px) {
+
+  .headingContainer {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .headingRow {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .headingRow h1 {
+    font-size: 3rem;
+    letter-spacing: 0.2rem;
+  }
+
+  .headingRow h2 {
+    font-size: 1.4rem;
+  }
+
+  .headingRow h3 {
+    width: 100%;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    margin-left: 0px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .headingRow h1 {
+    font-size: 3.5rem;
+    letter-spacing: 0.25rem;
+  }
+
+  .headingRow h2 {
+    font-size: 1.5rem;
+  }
+
+  .headingRow h3 {
+    font-size: 1.15rem;
+    margin-left: 22px;
+  }
+}
+
+/* Desktop and larger screens */
+@media (min-width: 1025px) {
+  .headingRow h1 {
+    font-size: 4.5rem;
+    letter-spacing: 0.35rem;
+  }
+
+  .headingRow h2 {
+    font-size: 1.8rem;
+  }
+
+  .headingRow h3 {
+    font-size: 1.3rem;
+    margin-left: 0px;
+  }
+}
+
+/* Print styles for A4 page */
+@media print {
+  .headingContainer {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .headingRow {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .headingRow h1 {
+    font-size: 2.2rem;
+    letter-spacing: 0.15rem;
+    line-height: 1.2;
+  }
+
+  .headingRow h2 {
+    font-size: 1.1rem;
+    margin-top: 0.3rem;
+  }
+
+  .headingRow h3 {
+    font-size: 0.85rem;
+    margin-left: 0;
+    margin-top: 0.2rem;
+    width: 100%;
+  }
+}

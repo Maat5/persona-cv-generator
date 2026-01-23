@@ -1,0 +1,102 @@
+.knowledgeAndToolsContainer {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  text-transform: uppercase;
+  margin-top: 1.85rem;
+}
+
+.headingRow {
+  width: 100%;
+  flex-wrap: nowrap;
+  display: flex;
+  margin-bottom: 0.2rem;
+  color: rgb(var(--teal-color));
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.headingRow:not(:first-child) {
+  margin-top: 2rem;
+}
+
+.skillsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.coursesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.coursesContainer h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgb(var(--primary-color));
+  line-height: 1.5;
+  line-break: auto;
+}
+
+.courseContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.courseItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.courseYear {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgb(var(--teal-color));
+  line-height: 1.5;
+  line-break: auto;
+}
+
+.courseCourse {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: rgb(var(--primary-color));
+  line-height: 1.5;
+  line-break: auto;
+}
+
+.bulletItem {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 5px solid rgb(var(--teal-color));
+  background-color: white;
+  position: relative;
+}
+
+.bulletItem:last-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.bulletItem:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 2rem;
+  border-left: 2px dashed rgb(var(--teal-color));
+}
+
+.courseContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

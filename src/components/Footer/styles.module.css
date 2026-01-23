@@ -1,0 +1,5 @@
+.footerContainer {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: rgba(var(--primary-color), 0.5)
+}

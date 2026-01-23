@@ -1,0 +1,141 @@
+.page {
+  min-height: 100dvh;
+  padding: 1.5rem 1rem 2.5rem;
+}
+
+.toolbar {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.toolbarLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: rgba(var(--text-color), 1);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: rgba(var(--text-color), 0.7);
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.85);
+  color: rgba(var(--text-color), 1);
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+.btnPrimary {
+  background: rgb(var(--teal-color));
+  color: white;
+  border-color: rgba(var(--teal-color), 0.35);
+}
+
+.btnPrimary:hover {
+  background: rgba(var(--teal-color), 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(var(--teal-color), 0.4);
+}
+
+.empty {
+  max-width: 760px;
+  margin: 4rem auto 0;
+  padding: 1.25rem;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+}
+
+.empty h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.35rem;
+}
+
+.empty p {
+  color: rgba(var(--text-color), 0.75);
+  margin-bottom: 0.9rem;
+}
+
+.contentHolder {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.contentHolder .section {
+  width: 100%;
+  border: 1px solid red;
+  padding: 0 0.5rem;
+}
+
+.contentHolder .section:first-child {
+  margin-top: 0;
+  width: 60%;
+}
+
+.contentHolder .section:last-child {
+  margin-bottom: 0;
+  width: 40%;
+}
+
+@media print {
+  .page {
+    padding: 0;
+    background: white !important;
+    font-size: 14px;
+  }
+
+  .toolbar {
+    display: none !important;
+  }
+
+  .page a[href]:after {
+    content: "" !important;
+  }
+
+  /* avoid awkward page breaks inside cards/sections */
+  /* .page section,
+  .page header,
+  .page footer {
+    break-inside: avoid;
+  } */
+}
+
+
+@page {
+  size: A4 portrait; /* Sets physical paper size and orientation */
+  margin: 20mm;      /* Sets the printable area margins */
+}

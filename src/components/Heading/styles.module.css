@@ -1,0 +1,11 @@
+.headingContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+}
+
+.preview {
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
