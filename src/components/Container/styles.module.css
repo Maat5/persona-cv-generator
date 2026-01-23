@@ -1,11 +1,29 @@
+/* 
+ * CV Generator - Container Styles
+ */
+
 .container {
-  max-width: 1280px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 1rem 0;
+  padding: 2rem 2.5rem;
   width: 100%;
 }
 
 .preview {
-  width: 100%;
-  padding: 1rem 5px;
+  padding: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+/* Print optimization */
+@media print {
+  .container {
+    max-width: none;
+    padding: 8mm 0 12mm 0;
+  }
 }

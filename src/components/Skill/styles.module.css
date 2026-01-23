@@ -1,32 +1,57 @@
+/* 
+ * CV Generator - Skill Styles
+ */
+
 .skillItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  padding: 0.25rem 0;
 }
 
 .skillName {
-  line-height: 1.5;
-  line-break: auto;
+  font-size: 0.9375rem;
   font-weight: 500;
-  color: rgb(var(--primary-color));
-  min-width: 180px;
+  color: var(--text-primary, #0F172A);
+  line-height: 1.4;
+  min-width: 0;
+  flex: 1;
 }
 
 .skillDots {
   display: flex;
   gap: 0.25rem;
+  flex-shrink: 0;
 }
 
 .skillDot {
-  width: 1rem;
-  height: 1rem;
+  width: 0.625rem;
+  height: 0.625rem;
   border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
 .skillDotActive {
-  background-color: rgb(var(--teal-color));
+  background-color: var(--accent, #0D9488);
 }
 
 .skillDotInactive {
-  background-color: #d9d9d9;
+  background-color: var(--border-default, rgba(0, 0, 0, 0.1));
+}
+
+/* Print optimization */
+@media print {
+  .skillItem {
+    padding: 0.125rem 0;
+  }
+  
+  .skillName {
+    font-size: 0.8125rem;
+  }
+  
+  .skillDot {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
 }

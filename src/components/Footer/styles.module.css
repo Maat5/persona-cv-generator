@@ -1,5 +1,32 @@
+/* 
+ * CV Generator - Footer Styles
+ */
+
 .footerContainer {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: rgba(var(--primary-color), 0.5)
+  padding-top: 2rem;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.footerText {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-tertiary, #94A3B8);
+  letter-spacing: 0.02em;
+}
+
+@media print {
+  .footerContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 0;
+    background: white;
+  }
+  
+  .footerText {
+    font-size: 0.5rem;
+  }
 }

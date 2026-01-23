@@ -1,3 +1,7 @@
+/* 
+ * CV Generator - Editor Page
+ */
+
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -16,7 +20,6 @@ import styles from "./editor.module.css";
 
 import { Container } from "@/components/Container/Container";
 import { Heading } from "@/components/Heading/Heading";
-
 import { Experience } from "@/components/Experience/Experience";
 import { KnowledgeAndTools } from "@/components/knowledgeAndTools/KnowledgeAndTools";
 
@@ -134,7 +137,7 @@ export default function EditorPage() {
     setResume((prev) => ({
       ...prev,
       experience: prev.experience.map((e, i) =>
-        i === index ? ({ ...e, [key]: value } as any) : e
+        i === index ? ({ ...e, [key]: value } as typeof e) : e
       ),
     }));
   }
@@ -342,6 +345,14 @@ export default function EditorPage() {
     });
   }
 
+  // Helper to get range slider gradient style for visual progress
+  function getRangeStyle(value: number, max: number = 10) {
+    const percent = (value / max) * 100;
+    return {
+      background: `linear-gradient(to right, var(--accent) 0%, var(--accent) ${percent}%, var(--border-default) ${percent}%, var(--border-default) 100%)`,
+    };
+  }
+
   function onReset() {
     const ok = window.confirm("Clear your saved resume and start over?");
     if (!ok) return;
@@ -352,120 +363,151 @@ export default function EditorPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.shell}>
-        <div className={styles.topCard}>
-          <div className={styles.topRow}>
-            <div className={styles.titleWrap}>
-              <h1>Your Resume Details</h1>
-              <div className={styles.subtitle}>
-                Resume Strength: {strength}% Complete
-              </div>
-            </div>
-            <div className={styles.cardActions}>
-              <Link
-                className={`${styles.btn} ${styles.btnPrimary}`}
-                href="/print"
-              >
-                Open Print View
-              </Link>
-              <button
-                className={styles.btn}
-                type="button"
-                onClick={() => saveResumeData(resume)}
-              >
-                Save now
-              </button>
-              <button
-                className={`${styles.btn} ${styles.btnDanger}`}
-                type="button"
-                onClick={onReset}
-              >
-                Reset
-              </button>
-              <span className={savedPillClass}>{savedPillText}</span>
-            </div>
+      {/* Top Navigation Bar */}
+      <nav className={styles.topBar}>
+        <div className={styles.topBarInner}>
+          <div className={styles.topBarLeft}>
+            <Link href="/" className={styles.backLink}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"/>
+                <polyline points="12 19 5 12 12 5"/>
+              </svg>
+              Home
+            </Link>
+            <span className={styles.topBarTitle}>Resume Editor</span>
           </div>
-          <div className={styles.progressRow}>
-            <div
-              className={styles.progressTrack}
-              aria-label="Resume completion"
+          <div className={styles.topBarRight}>
+            <span className={savedPillClass}>
+              {saveState === "saving" ? (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{animation: 'spin 1s linear infinite'}}>
+                  <circle cx="12" cy="12" r="10" opacity="0.25"/>
+                  <path d="M12 2a10 10 0 0 1 10 10"/>
+                </svg>
+              ) : (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              )}
+              {savedPillText}
+            </span>
+            <button
+              className={styles.btn}
+              type="button"
+              onClick={() => saveResumeData(resume)}
             >
-              <div
-                className={styles.progressFill}
-                style={{ width: `${strength}%` }}
-              />
-            </div>
-            <div className={styles.progressLabel}>{strength}%</div>
+              Save
+            </button>
+            <button
+              className={`${styles.btn} ${styles.btnDanger}`}
+              type="button"
+              onClick={onReset}
+            >
+              Reset
+            </button>
+            <Link
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              href="/print"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+              </svg>
+              Print View
+            </Link>
           </div>
         </div>
+      </nav>
 
+      {/* Progress Card */}
+      <div className={styles.progressCard}>
+        <div className={styles.progressHeader}>
+          <span className={styles.progressTitle}>Resume Strength</span>
+          <span className={styles.progressPercent}>{strength}% Complete</span>
+        </div>
+        <div className={styles.progressTrack}>
+          <div
+            className={styles.progressFill}
+            style={{ width: `${strength}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className={styles.shell}>
+        {/* Left Column - Form */}
         <div className={styles.leftCol}>
+          {/* Header & Contact */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <h2>Header & Contact</h2>
+              <h2>Personal Information</h2>
             </div>
-            <div className={styles.grid2}>
-              <div className={styles.field}>
-                <div className={styles.label}>Full Name</div>
-                <input
-                  className={styles.input}
-                  value={resume.header.name}
-                  onChange={(e) => setHeaderField("name", e.target.value)}
-                  placeholder="Full Name"
-                />
-              </div>
-              <div className={styles.field}>
-                <div className={styles.label}>Job Title</div>
-                <input
-                  className={styles.input}
-                  value={resume.header.title}
-                  onChange={(e) => setHeaderField("title", e.target.value)}
-                  placeholder="Job Title"
-                />
-              </div>
-              <div className={styles.field}>
-                <div className={styles.label}>Website/Portfolio URL</div>
-                <input
-                  className={styles.input}
-                  value={resume.header.url}
-                  onChange={(e) => setHeaderField("url", e.target.value)}
-                  placeholder="https://example.com"
-                />
-              </div>
-              <div className={styles.field}>
-                <div className={styles.label}>Linkedin Profile</div>
-                <input
-                  className={styles.input}
-                  value={resume.contactInfo.likedinUrl}
-                  onChange={(e) =>
-                    setContactField("likedinUrl", e.target.value)
-                  }
-                  placeholder="https://linkedin.com/in/..."
-                />
-              </div>
-              <div className={styles.field}>
-                <div className={styles.label}>Email</div>
-                <input
-                  className={styles.input}
-                  value={resume.contactInfo.email}
-                  onChange={(e) => setContactField("email", e.target.value)}
-                  placeholder="name@email.com"
-                />
-              </div>
-              <div className={styles.field}>
-                <div className={styles.label}>Phone Number</div>
-                <input
-                  className={styles.input}
-                  value={resume.contactInfo.phoneNumber}
-                  onChange={(e) =>
-                    setContactField("phoneNumber", e.target.value)
-                  }
-                  placeholder="+1 555 123 4567"
-                />
+            <div className={styles.cardBody}>
+              <div className={styles.grid2}>
+                <div className={styles.field}>
+                  <label className={styles.label}>Full Name</label>
+                  <input
+                    className={styles.input}
+                    value={resume.header.name}
+                    onChange={(e) => setHeaderField("name", e.target.value)}
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>Job Title</label>
+                  <input
+                    className={styles.input}
+                    value={resume.header.title}
+                    onChange={(e) => setHeaderField("title", e.target.value)}
+                    placeholder="Software Engineer"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>Email</label>
+                  <input
+                    className={styles.input}
+                    type="email"
+                    value={resume.contactInfo.email}
+                    onChange={(e) => setContactField("email", e.target.value)}
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>Phone Number</label>
+                  <input
+                    className={styles.input}
+                    value={resume.contactInfo.phoneNumber}
+                    onChange={(e) =>
+                      setContactField("phoneNumber", e.target.value)
+                    }
+                    placeholder="+1 555 123 4567"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>LinkedIn Profile</label>
+                  <input
+                    className={styles.input}
+                    value={resume.contactInfo.likedinUrl}
+                    onChange={(e) =>
+                      setContactField("likedinUrl", e.target.value)
+                    }
+                    placeholder="https://linkedin.com/in/johndoe"
+                  />
+                </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>Website / Portfolio</label>
+                  <input
+                    className={styles.input}
+                    value={resume.header.url}
+                    onChange={(e) => setHeaderField("url", e.target.value)}
+                    placeholder="https://example.com"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
+          {/* Experience */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <h2>Experience</h2>
@@ -475,539 +517,544 @@ export default function EditorPage() {
                   type="button"
                   onClick={addExperience}
                 >
-                  + Add Experience
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Add
                 </button>
               </div>
             </div>
-            {resume.experience.length === 0 && (
-              <div className={styles.muted}>
-                Add your work history and responsibilities.
-              </div>
-            )}
-            {resume.experience.map((exp, index) => (
-              <div key={index} className={styles.itemBlock}>
-                <div className={styles.itemBlockHeader}>
-                  <div className={styles.itemTitle}>
-                    Experience #{index + 1}
+            <div className={styles.cardBody}>
+              {resume.experience.length === 0 && (
+                <p className={styles.muted}>
+                  Add your work history and responsibilities.
+                </p>
+              )}
+              {resume.experience.map((exp, index) => (
+                <div key={index} className={styles.itemBlock}>
+                  <div className={styles.itemBlockHeader}>
+                    <span className={styles.itemTitle}>
+                      {exp.company || exp.position || `Experience #${index + 1}`}
+                    </span>
+                    <button
+                      className={`${styles.btn} ${styles.btnDanger}`}
+                      type="button"
+                      onClick={() => removeExperience(index)}
+                    >
+                      Remove
+                    </button>
                   </div>
-                  <button
-                    className={`${styles.btn} ${styles.btnDanger}`}
-                    type="button"
-                    onClick={() => removeExperience(index)}
-                  >
-                    Remove
-                  </button>
-                </div>
-                <div className={styles.grid2}>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Company</div>
-                    <input
-                      className={styles.input}
-                      value={exp.company}
-                      onChange={(e) =>
-                        updateExperienceField(index, "company", e.target.value)
-                      }
-                      placeholder="Company"
-                    />
+                  <div className={styles.grid2}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Company</label>
+                      <input
+                        className={styles.input}
+                        value={exp.company}
+                        onChange={(e) =>
+                          updateExperienceField(index, "company", e.target.value)
+                        }
+                        placeholder="Company Name"
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Period</label>
+                      <input
+                        className={styles.input}
+                        value={exp.period}
+                        onChange={(e) =>
+                          updateExperienceField(index, "period", e.target.value)
+                        }
+                        placeholder="Jan 2023 - Present"
+                      />
+                    </div>
+                    <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                      <label className={styles.label}>Position</label>
+                      <input
+                        className={styles.input}
+                        value={exp.position}
+                        onChange={(e) =>
+                          updateExperienceField(index, "position", e.target.value)
+                        }
+                        placeholder="Software Engineer"
+                      />
+                    </div>
                   </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Period</div>
-                    <input
-                      className={styles.input}
-                      value={exp.period}
-                      onChange={(e) =>
-                        updateExperienceField(index, "period", e.target.value)
-                      }
-                      placeholder="Jan 2023 - Present"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Position</div>
-                    <input
-                      className={styles.input}
-                      value={exp.position}
-                      onChange={(e) =>
-                        updateExperienceField(index, "position", e.target.value)
-                      }
-                      placeholder="Software Engineer"
-                    />
-                  </div>
-                </div>
 
-                <div
-                  className={styles.itemBlockHeader}
-                  style={{ marginTop: "0.75rem" }}
-                >
-                  <div className={styles.itemTitle}>Responsibilities</div>
-                  <div className={styles.cardActions}>
+                  <div
+                    className={styles.itemBlockHeader}
+                    style={{ marginTop: "1rem", marginBottom: "0.5rem" }}
+                  >
+                    <span className={styles.muted}>Responsibilities</span>
                     <button
                       className={styles.btn}
                       type="button"
                       onClick={() => addResponsibility(index)}
                     >
-                      + Add Responsibility
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                      Add
                     </button>
                   </div>
-                </div>
 
-                {exp.responsibilities.map((resp, ri) => (
-                  <div
-                    key={ri}
-                    className={styles.smallRow}
-                    style={{ marginTop: "0.5rem" }}
-                  >
-                    <input
-                      className={styles.input}
-                      value={resp}
-                      onChange={(e) =>
-                        updateResponsibility(index, ri, e.target.value)
-                      }
-                      placeholder="Responsibility"
-                    />
-                    <button
-                      className={`${styles.btn} ${styles.btnDanger}`}
-                      type="button"
-                      onClick={() => removeResponsibility(index, ri)}
-                      aria-label="Remove responsibility"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ))}
-              </div>
-            ))}
+                  {exp.responsibilities.map((resp, ri) => (
+                    <div key={ri} className={styles.smallRow}>
+                      <input
+                        className={styles.input}
+                        value={resp}
+                        onChange={(e) =>
+                          updateResponsibility(index, ri, e.target.value)
+                        }
+                        placeholder="Describe your responsibility..."
+                      />
+                      <button
+                        className={`${styles.btn} ${styles.btnDanger}`}
+                        type="button"
+                        onClick={() => removeResponsibility(index, ri)}
+                        aria-label="Remove responsibility"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="6" x2="6" y2="18"/>
+                          <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
 
+          {/* Skills */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <h2>Knowledge & Tools</h2>
+              <h2>Skills & Tools</h2>
             </div>
-
-            <div className={styles.itemBlock}>
-              <div className={styles.itemBlockHeader}>
-                <div className={styles.itemTitle}>Primary</div>
-                <button
-                  className={styles.btn}
-                  type="button"
-                  onClick={() => addSkill("primary")}
-                >
-                  + Add
-                </button>
-              </div>
-              {resume.knowledgeAndTools.primary.map((skill, index) => (
-                <div
-                  key={index}
-                  className={styles.grid3}
-                  style={{ marginTop: "0.5rem" }}
-                >
-                  <div className={styles.field}>
-                    <div className={styles.label}>Name</div>
-                    <input
-                      className={styles.input}
-                      value={skill.name}
-                      onChange={(e) =>
-                        updateSkill("primary", index, "name", e.target.value)
-                      }
-                      placeholder="React"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Level</div>
-                    <div className={styles.smallRow}>
+            <div className={styles.cardBody}>
+              {/* Primary Skills */}
+              <div className={styles.itemBlock}>
+                <div className={styles.itemBlockHeader}>
+                  <span className={styles.itemTitle}>Primary Skills</span>
+                  <button
+                    className={styles.btn}
+                    type="button"
+                    onClick={() => addSkill("primary")}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+                {resume.knowledgeAndTools.primary.map((skill, index) => (
+                  <div key={index} className={styles.grid3} style={{ marginTop: "0.5rem" }}>
+                    <div className={styles.field}>
                       <input
-                        className={styles.range}
-                        type="range"
-                        min={0}
-                        max={10}
-                        value={skill.level}
+                        className={styles.input}
+                        value={skill.name}
                         onChange={(e) =>
-                          updateSkill(
-                            "primary",
-                            index,
-                            "level",
-                            Number(e.target.value)
-                          )
+                          updateSkill("primary", index, "name", e.target.value)
                         }
+                        placeholder="e.g. React, Python"
                       />
-                      <span
-                        className={styles.muted}
-                        style={{ width: 28, textAlign: "right" }}
-                      >
-                        {skill.level}
-                      </span>
                     </div>
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>&nbsp;</div>
+                    <div className={styles.field}>
+                      <div className={styles.smallRow}>
+                        <input
+                          className={styles.range}
+                          type="range"
+                          min={0}
+                          max={10}
+                          value={skill.level}
+                          onChange={(e) =>
+                            updateSkill("primary", index, "level", Number(e.target.value))
+                          }
+                          style={getRangeStyle(skill.level)}
+                        />
+                        <span className={styles.muted} style={{ width: 28, textAlign: "right" }}>
+                          {skill.level}
+                        </span>
+                      </div>
+                    </div>
                     <button
                       className={`${styles.btn} ${styles.btnDanger}`}
                       type="button"
                       onClick={() => removeSkill("primary", index)}
                     >
-                      Remove
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
                     </button>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.itemBlock}>
-              <div className={styles.itemBlockHeader}>
-                <div className={styles.itemTitle}>Secondary</div>
-                <button
-                  className={styles.btn}
-                  type="button"
-                  onClick={() => addSkill("secondary")}
-                >
-                  + Add
-                </button>
+                ))}
               </div>
-              {resume.knowledgeAndTools.secondary.map((skill, index) => (
-                <div
-                  key={index}
-                  className={styles.grid3}
-                  style={{ marginTop: "0.5rem" }}
-                >
-                  <div className={styles.field}>
-                    <div className={styles.label}>Name</div>
-                    <input
-                      className={styles.input}
-                      value={skill.name}
-                      onChange={(e) =>
-                        updateSkill("secondary", index, "name", e.target.value)
-                      }
-                      placeholder="SQL"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Level</div>
-                    <div className={styles.smallRow}>
+
+              {/* Secondary Skills */}
+              <div className={styles.itemBlock}>
+                <div className={styles.itemBlockHeader}>
+                  <span className={styles.itemTitle}>Secondary Skills</span>
+                  <button
+                    className={styles.btn}
+                    type="button"
+                    onClick={() => addSkill("secondary")}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+                {resume.knowledgeAndTools.secondary.map((skill, index) => (
+                  <div key={index} className={styles.grid3} style={{ marginTop: "0.5rem" }}>
+                    <div className={styles.field}>
                       <input
-                        className={styles.range}
-                        type="range"
-                        min={0}
-                        max={10}
-                        value={skill.level}
+                        className={styles.input}
+                        value={skill.name}
                         onChange={(e) =>
-                          updateSkill(
-                            "secondary",
-                            index,
-                            "level",
-                            Number(e.target.value)
-                          )
+                          updateSkill("secondary", index, "name", e.target.value)
                         }
+                        placeholder="e.g. SQL, Docker"
                       />
-                      <span
-                        className={styles.muted}
-                        style={{ width: 28, textAlign: "right" }}
-                      >
-                        {skill.level}
-                      </span>
                     </div>
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>&nbsp;</div>
+                    <div className={styles.field}>
+                      <div className={styles.smallRow}>
+                        <input
+                          className={styles.range}
+                          type="range"
+                          min={0}
+                          max={10}
+                          value={skill.level}
+                          onChange={(e) =>
+                            updateSkill("secondary", index, "level", Number(e.target.value))
+                          }
+                          style={getRangeStyle(skill.level)}
+                        />
+                        <span className={styles.muted} style={{ width: 28, textAlign: "right" }}>
+                          {skill.level}
+                        </span>
+                      </div>
+                    </div>
                     <button
                       className={`${styles.btn} ${styles.btnDanger}`}
                       type="button"
                       onClick={() => removeSkill("secondary", index)}
                     >
-                      Remove
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
                     </button>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.itemBlock}>
-              <div className={styles.itemBlockHeader}>
-                <div className={styles.itemTitle}>Other Skills</div>
-                <button
-                  className={styles.btn}
-                  type="button"
-                  onClick={() => addSkill("otherSkills")}
-                >
-                  + Add
-                </button>
+                ))}
               </div>
-              {resume.otherSkills.map((skill, index) => (
-                <div
-                  key={index}
-                  className={styles.grid3}
-                  style={{ marginTop: "0.5rem" }}
-                >
-                  <div className={styles.field}>
-                    <div className={styles.label}>Name</div>
-                    <input
-                      className={styles.input}
-                      value={skill.name}
-                      onChange={(e) =>
-                        updateSkill(
-                          "otherSkills",
-                          index,
-                          "name",
-                          e.target.value
-                        )
-                      }
-                      placeholder="Docker"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Level</div>
-                    <div className={styles.smallRow}>
+
+              {/* Other Skills */}
+              <div className={styles.itemBlock}>
+                <div className={styles.itemBlockHeader}>
+                  <span className={styles.itemTitle}>Other Skills</span>
+                  <button
+                    className={styles.btn}
+                    type="button"
+                    onClick={() => addSkill("otherSkills")}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add
+                  </button>
+                </div>
+                {resume.otherSkills.map((skill, index) => (
+                  <div key={index} className={styles.grid3} style={{ marginTop: "0.5rem" }}>
+                    <div className={styles.field}>
                       <input
-                        className={styles.range}
-                        type="range"
-                        min={0}
-                        max={10}
-                        value={skill.level}
+                        className={styles.input}
+                        value={skill.name}
                         onChange={(e) =>
-                          updateSkill(
-                            "otherSkills",
-                            index,
-                            "level",
-                            Number(e.target.value)
-                          )
+                          updateSkill("otherSkills", index, "name", e.target.value)
                         }
+                        placeholder="e.g. Agile, Communication"
                       />
-                      <span
-                        className={styles.muted}
-                        style={{ width: 28, textAlign: "right" }}
-                      >
-                        {skill.level}
-                      </span>
                     </div>
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>&nbsp;</div>
+                    <div className={styles.field}>
+                      <div className={styles.smallRow}>
+                        <input
+                          className={styles.range}
+                          type="range"
+                          min={0}
+                          max={10}
+                          value={skill.level}
+                          onChange={(e) =>
+                            updateSkill("otherSkills", index, "level", Number(e.target.value))
+                          }
+                          style={getRangeStyle(skill.level)}
+                        />
+                        <span className={styles.muted} style={{ width: 28, textAlign: "right" }}>
+                          {skill.level}
+                        </span>
+                      </div>
+                    </div>
                     <button
                       className={`${styles.btn} ${styles.btnDanger}`}
                       type="button"
                       onClick={() => removeSkill("otherSkills", index)}
                     >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Education */}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2>Education</h2>
+              <div className={styles.cardActions}>
+                <button
+                  className={`${styles.btn} ${styles.btnPrimary}`}
+                  type="button"
+                  onClick={addEducation}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Add
+                </button>
+              </div>
+            </div>
+            <div className={styles.cardBody}>
+              {resume.education.length === 0 && (
+                <p className={styles.muted}>Add your education history.</p>
+              )}
+              {resume.education.map((edu, index) => (
+                <div key={index} className={styles.itemBlock}>
+                  <div className={styles.itemBlockHeader}>
+                    <span className={styles.itemTitle}>
+                      {edu.institution || `Education #${index + 1}`}
+                    </span>
+                    <button
+                      className={`${styles.btn} ${styles.btnDanger}`}
+                      type="button"
+                      onClick={() => removeEducation(index)}
+                    >
                       Remove
                     </button>
+                  </div>
+                  <div className={styles.grid2}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Institution</label>
+                      <input
+                        className={styles.input}
+                        value={edu.institution}
+                        onChange={(e) =>
+                          updateEducation(index, "institution", e.target.value)
+                        }
+                        placeholder="University Name"
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Period</label>
+                      <input
+                        className={styles.input}
+                        value={edu.period}
+                        onChange={(e) =>
+                          updateEducation(index, "period", e.target.value)
+                        }
+                        placeholder="2019 - 2023"
+                      />
+                    </div>
+                    <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                      <label className={styles.label}>Degree</label>
+                      <input
+                        className={styles.input}
+                        value={edu.degree}
+                        onChange={(e) =>
+                          updateEducation(index, "degree", e.target.value)
+                        }
+                        placeholder="BSc Computer Science"
+                      />
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Courses */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <h2>Courses & Certifications</h2>
               <div className={styles.cardActions}>
                 <button
-                  className={styles.btn}
+                  className={`${styles.btn} ${styles.btnPrimary}`}
                   type="button"
                   onClick={addCourse}
                 >
-                  + Add Course
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Add
                 </button>
               </div>
             </div>
-            {resume.courses.map((course, index) => (
-              <div key={index} className={styles.itemBlock}>
-                <div className={styles.itemBlockHeader}>
-                  <div className={styles.itemTitle}>Course #{index + 1}</div>
-                  <button
-                    className={`${styles.btn} ${styles.btnDanger}`}
-                    type="button"
-                    onClick={() => removeCourse(index)}
-                  >
-                    Remove
-                  </button>
+            <div className={styles.cardBody}>
+              {resume.courses.length === 0 && (
+                <p className={styles.muted}>
+                  Add certifications or courses you&apos;ve completed.
+                </p>
+              )}
+              {resume.courses.map((course, index) => (
+                <div key={index} className={styles.itemBlock}>
+                  <div className={styles.itemBlockHeader}>
+                    <span className={styles.itemTitle}>
+                      {course.course || `Course #${index + 1}`}
+                    </span>
+                    <button
+                      className={`${styles.btn} ${styles.btnDanger}`}
+                      type="button"
+                      onClick={() => removeCourse(index)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div className={styles.grid2}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Institution</label>
+                      <input
+                        className={styles.input}
+                        value={course.institution}
+                        onChange={(e) =>
+                          updateCourse(index, "institution", e.target.value)
+                        }
+                        placeholder="Institution Name"
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Year</label>
+                      <input
+                        className={styles.input}
+                        value={course.year}
+                        onChange={(e) =>
+                          updateCourse(index, "year", e.target.value)
+                        }
+                        placeholder="2024"
+                      />
+                    </div>
+                    <div className={styles.field} style={{ gridColumn: "1 / -1" }}>
+                      <label className={styles.label}>Course / Certification</label>
+                      <input
+                        className={styles.input}
+                        value={course.course}
+                        onChange={(e) =>
+                          updateCourse(index, "course", e.target.value)
+                        }
+                        placeholder="Course name"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.grid2}>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Institution</div>
-                    <input
-                      className={styles.input}
-                      value={course.institution}
-                      onChange={(e) =>
-                        updateCourse(index, "institution", e.target.value)
-                      }
-                      placeholder="Institution"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Year</div>
-                    <input
-                      className={styles.input}
-                      value={course.year}
-                      onChange={(e) =>
-                        updateCourse(index, "year", e.target.value)
-                      }
-                      placeholder="2024"
-                    />
-                  </div>
-                  <div
-                    className={styles.field}
-                    style={{ gridColumn: "1 / -1" }}
-                  >
-                    <div className={styles.label}>Course</div>
-                    <input
-                      className={styles.input}
-                      value={course.course}
-                      onChange={(e) =>
-                        updateCourse(index, "course", e.target.value)
-                      }
-                      placeholder="Course name"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            {resume.courses.length === 0 && (
-              <div className={styles.muted}>
-                Add certifications or courses you’ve completed.
-              </div>
-            )}
-          </div>
-
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h2>Education</h2>
-              <div className={styles.cardActions}>
-                <button
-                  className={styles.btn}
-                  type="button"
-                  onClick={addEducation}
-                >
-                  + Add Education
-                </button>
-              </div>
+              ))}
             </div>
-            {resume.education.map((edu, index) => (
-              <div key={index} className={styles.itemBlock}>
-                <div className={styles.itemBlockHeader}>
-                  <div className={styles.itemTitle}>Education #{index + 1}</div>
-                  <button
-                    className={`${styles.btn} ${styles.btnDanger}`}
-                    type="button"
-                    onClick={() => removeEducation(index)}
-                  >
-                    Remove
-                  </button>
-                </div>
-                <div className={styles.grid2}>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Institution</div>
-                    <input
-                      className={styles.input}
-                      value={edu.institution}
-                      onChange={(e) =>
-                        updateEducation(index, "institution", e.target.value)
-                      }
-                      placeholder="Institution"
-                    />
-                  </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Period</div>
-                    <input
-                      className={styles.input}
-                      value={edu.period}
-                      onChange={(e) =>
-                        updateEducation(index, "period", e.target.value)
-                      }
-                      placeholder="2019 - 2023"
-                    />
-                  </div>
-                  <div
-                    className={styles.field}
-                    style={{ gridColumn: "1 / -1" }}
-                  >
-                    <div className={styles.label}>Degree</div>
-                    <input
-                      className={styles.input}
-                      value={edu.degree}
-                      onChange={(e) =>
-                        updateEducation(index, "degree", e.target.value)
-                      }
-                      placeholder="BSc Computer Science"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-            {resume.education.length === 0 && (
-              <div className={styles.muted}>Add your education history.</div>
-            )}
           </div>
 
+          {/* Languages */}
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <h2>Languages</h2>
               <div className={styles.cardActions}>
                 <button
-                  className={styles.btn}
+                  className={`${styles.btn} ${styles.btnPrimary}`}
                   type="button"
                   onClick={addLanguage}
                 >
-                  + Add Language
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                  </svg>
+                  Add
                 </button>
               </div>
             </div>
-            {resume.languages.map((lang, index) => (
-              <div key={index} className={styles.itemBlock}>
-                <div className={styles.itemBlockHeader}>
-                  <div className={styles.itemTitle}>Language #{index + 1}</div>
-                  <button
-                    className={`${styles.btn} ${styles.btnDanger}`}
-                    type="button"
-                    onClick={() => removeLanguage(index)}
-                  >
-                    Remove
-                  </button>
-                </div>
-                <div className={styles.grid2}>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Language</div>
-                    <input
-                      className={styles.input}
-                      value={lang.language}
-                      onChange={(e) =>
-                        updateLanguage(index, "language", e.target.value)
-                      }
-                      placeholder="English"
-                    />
+            <div className={styles.cardBody}>
+              {resume.languages.length === 0 && (
+                <p className={styles.muted}>Add the languages you speak.</p>
+              )}
+              {resume.languages.map((lang, index) => (
+                <div key={index} className={styles.itemBlock}>
+                  <div className={styles.itemBlockHeader}>
+                    <span className={styles.itemTitle}>
+                      {lang.language || `Language #${index + 1}`}
+                    </span>
+                    <button
+                      className={`${styles.btn} ${styles.btnDanger}`}
+                      type="button"
+                      onClick={() => removeLanguage(index)}
+                    >
+                      Remove
+                    </button>
                   </div>
-                  <div className={styles.field}>
-                    <div className={styles.label}>Level (0-10)</div>
-                    <div className={styles.smallRow}>
+                  <div className={styles.grid2}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Language</label>
                       <input
-                        className={styles.range}
-                        type="range"
-                        min={0}
-                        max={10}
-                        value={Number(lang.level) || 0}
+                        className={styles.input}
+                        value={lang.language}
                         onChange={(e) =>
-                          updateLanguage(index, "level", Number(e.target.value))
+                          updateLanguage(index, "language", e.target.value)
                         }
+                        placeholder="English"
                       />
-                      <span
-                        className={styles.muted}
-                        style={{ width: 28, textAlign: "right" }}
-                      >
-                        {Number(lang.level) || 0}
-                      </span>
+                    </div>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Level (0-10)</label>
+                      <div className={styles.smallRow}>
+                        <input
+                          className={styles.range}
+                          type="range"
+                          min={0}
+                          max={10}
+                          value={Number(lang.level) || 0}
+                          onChange={(e) =>
+                            updateLanguage(index, "level", Number(e.target.value))
+                          }
+                          style={getRangeStyle(Number(lang.level) || 0)}
+                        />
+                        <span className={styles.muted} style={{ width: 28, textAlign: "right" }}>
+                          {Number(lang.level) || 0}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-            {resume.languages.length === 0 && (
-              <div className={styles.muted}>Add the languages you speak.</div>
-            )}
+              ))}
+            </div>
           </div>
         </div>
 
+        {/* Right Column - Preview */}
         <div className={styles.rightCol}>
           <div className={styles.previewCard}>
             <div className={styles.previewHeader}>
-              <h2>Preview</h2>
+              <h2>Live Preview</h2>
               <Link className={styles.btn} href="/print">
-                Print
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Full View
               </Link>
             </div>
             <div className={styles.previewCanvas}>
@@ -1037,15 +1084,16 @@ export default function EditorPage() {
                 </Container>
               </div>
             </div>
-            <div
-              className={styles.muted}
-              style={{ marginTop: "0.65rem", fontSize: "0.85rem" }}
-            >
-              Tip: use <b>Print</b> to export to PDF.
-            </div>
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
