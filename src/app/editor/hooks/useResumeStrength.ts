@@ -1,5 +1,4 @@
 /* 
- * Copyright 2026 by Building Transparency. www.BuildingTransparency.org
  * Custom hook for calculating resume strength/completeness
  */
 

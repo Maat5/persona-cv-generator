@@ -1,5 +1,4 @@
 /* 
- * Copyright 2026 by Building Transparency. www.BuildingTransparency.org
  * Custom hook for managing resume data with auto-save
  */
 

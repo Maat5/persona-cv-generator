@@ -4,7 +4,7 @@
 
 import type { ResumeData } from "../../types";
 import styles from "../editor.module.css";
-import { PlusIcon, XIcon } from "../../../components/icons";
+import { PlusIcon, XIcon } from "@/components/icons";
 
 interface SkillsSectionProps {
   knowledgeAndTools: ResumeData["knowledgeAndTools"];

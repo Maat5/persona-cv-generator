@@ -10,7 +10,7 @@ import { Container } from "@/components/Container/Container";
 import { Heading } from "@/components/Heading/Heading";
 import { Experience } from "@/components/Experience/Experience";
 import { KnowledgeAndTools } from "@/components/knowledgeAndTools/KnowledgeAndTools";
-import { ExternalLinkIcon } from "../../../components/icons";
+import { ExternalLinkIcon } from "@/components/icons";
 
 interface PreviewPanelProps {
   resume: ResumeData;

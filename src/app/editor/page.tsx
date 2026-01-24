@@ -1,5 +1,4 @@
 /* 
- * Copyright 2026 by Building Transparency. www.BuildingTransparency.org
  * CV Generator - Editor Page
  */
 

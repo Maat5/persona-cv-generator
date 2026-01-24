@@ -4,7 +4,7 @@
 
 import type { ResumeData } from "../../types";
 import styles from "../editor.module.css";
-import { PlusIcon } from "../../../components/icons";
+import { PlusIcon } from "@/components/icons";
 
 interface CoursesSectionProps {
   courses: ResumeData["courses"];
