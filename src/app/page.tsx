@@ -17,10 +17,13 @@ import {
   FileIcon,
   GithubIcon,
 } from "@/components/icons";
+import { StructuredData } from "@/components/StructuredData";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <>
+      <StructuredData />
+      <div className={styles.page}>
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
@@ -265,5 +268,6 @@ export default function Home() {
         </div>
       </footer>
     </div>
+    </>
   );
 }
