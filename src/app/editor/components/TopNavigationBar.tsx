@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import styles from "../editor.module.css";
-import { ArrowLeftIcon, CheckIcon, SpinnerIcon, PrintIcon } from "./icons";
+import { ArrowLeftIcon, CheckIcon, SpinnerIcon, PrintIcon } from "../../../components/icons";
 
 type SaveState = "idle" | "saving" | "saved";
 
