@@ -3,6 +3,7 @@
  */
 
 import Link from "next/link";
+import Script from "next/script";
 import styles from "./page.module.css";
 import {
   LogoIcon,
@@ -35,7 +36,7 @@ export default function Home() {
           </Link>
           <div className={styles.headerActions}>
             <a 
-              href="https://buymeacoffee.com" 
+              href="https://buymeacoffee.com/manuel.abrante" 
               target="_blank" 
               rel="noopener noreferrer"
               className={styles.btnGhost}
@@ -268,6 +269,21 @@ export default function Home() {
         </div>
       </footer>
     </div>
+    
+    {/* Buy Me a Coffee Widget Script */}
+    <Script
+      src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+      data-name="bmc-button"
+      data-slug="manuel.abrante"
+      data-color="#ffffff"
+      data-emoji=""
+      data-font="Cookie"
+      data-text="Buy me a coffee"
+      data-outline-color="#000000"
+      data-font-color="#000000"
+      data-coffee-color="#FFDD00"
+      strategy="lazyOnload"
+    />
     </>
   );
 }
