@@ -5,10 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  // Set basePath for GitHub Pages project repository
-  // For user site (username.github.io repo), use ''
-  // For project site (other repos), use '/repo-name'
-  basePath: process.env.GITHUB_ACTIONS ? '/persona-cv-generator' : '',
+  // Served at the root of the custom domain https://persona-cv.com,
+  // so no basePath is needed in any environment.
 };
 
 export default nextConfig;

@@ -8,7 +8,7 @@ export function StructuredData() {
     '@type': 'WebApplication',
     name: 'Persona - Free CV Builder',
     description: 'Create a professional resume in minutes. Free, private, and no sign-up required. Build, preview, and print your CV instantly.',
-    url: 'https://maat5.github.io',
+    url: 'https://persona-cv.com',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Any',
     offers: {
@@ -24,7 +24,7 @@ export function StructuredData() {
       'Free to use',
       'No sign-up required',
     ],
-    screenshot: 'https://maat5.github.io/og-image.png',
+    screenshot: 'https://persona-cv.com/og-image.png',
     softwareVersion: '1.0',
     aggregateRating: {
       '@type': 'AggregateRating',

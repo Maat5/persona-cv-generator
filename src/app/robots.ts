@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: [],
     },
-    sitemap: 'https://maat5.github.io/sitemap.xml',
+    sitemap: 'https://persona-cv.com/sitemap.xml',
   };
 }

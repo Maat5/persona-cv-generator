@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://maat5.github.io';
+  const baseUrl = 'https://persona-cv.com';
   
   return [
     {

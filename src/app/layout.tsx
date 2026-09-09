@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(
-    process.env.GITHUB_ACTIONS 
-      ? "https://maat5.github.io/persona-cv-generator"
+    process.env.NODE_ENV === "production"
+      ? "https://persona-cv.com"
       : "http://localhost:3000"
   ),
   alternates: {
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Persona - Free CV Builder | Create Professional Resume Online",
     description: "Create a professional resume in minutes. Free, private, and no sign-up required. Build, preview, and print your CV instantly.",
-    url: process.env.GITHUB_ACTIONS 
-      ? "https://maat5.github.io/persona-cv-generator"
+    url: process.env.NODE_ENV === "production"
+      ? "https://persona-cv.com"
       : "http://localhost:3000",
     siteName: "Persona CV Builder",
     locale: "en_US",
